@@ -1,6 +1,6 @@
-# 🤖 InterviewForge — AI Avatar Interview Platform for Engineers
+# 🤖 InterviewForge: AI Avatar Interview Platform for Engineers
 
-> A real-time, AI-powered mock interview platform with an animated avatar interviewer, adaptive question generation, code execution, and post-session analytics — built for software engineers.
+> A real-time AI-powered mock interview platform with an animated avatar interviewer, adaptive question generation, code execution, and post-session analytics. Built specifically for software engineers who want to practice like it's the real thing.
 
 [![Tech Stack](https://img.shields.io/badge/stack-Next.js%20%7C%20FastAPI%20%7C%20Python-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
@@ -26,35 +26,37 @@
 
 ## Overview
 
-**InterviewForge** is an end-to-end AI interview simulation platform tailored for software engineers. It uses a lifelike AI avatar to conduct voice-based technical interviews — covering DSA, system design, and behavioral rounds — with real-time feedback, a built-in code editor, and a post-session performance report.
+**InterviewForge** is a full end-to-end AI interview simulation platform built for software engineers. Instead of practicing with static question lists or awkward text-based tools, you get a lifelike AI avatar that actually talks to you, listens to your answers, runs your code, and gives you honest feedback at the end.
 
-The product is designed for three use cases:
+It covers the three rounds that actually matter: DSA, system design, and behavioral. Everything happens in the browser. No downloads, no setup overhead for candidates.
 
-1. **Candidates** — Self-paced mock interviews with real feedback before the real thing.
-2. **Bootcamps / Colleges** — Structured interview readiness programs.
-3. **Recruiters (future)** — Async AI screening to shortlist candidates.
+The platform is built for three types of users:
+
+1. **Candidates** who want to do serious mock interviews with real feedback before the actual thing.
+2. **Bootcamps and colleges** that want a structured, repeatable interview readiness program.
+3. **Recruiters** (on the roadmap) who want async AI screening before scheduling human rounds.
 
 ---
 
 ## Features
 
 ### Core
-- 🧑‍💻 **AI Avatar Interviewer** — Animated 2D/3D avatar with lip-sync powered by D-ID or HeyGen API
-- 🎤 **Voice I/O** — Real-time speech-to-text (Whisper) + text-to-speech (ElevenLabs / browser TTS)
-- 🧠 **Adaptive Question Engine** — LLM-driven question generation based on role, difficulty, and prior answers
-- 💻 **In-Browser Code Editor** — Monaco Editor with multi-language support and live execution sandbox
-- 📊 **Post-Session Analytics** — Scoring rubric, answer quality breakdown, improvement suggestions
-- 🔁 **Session Replay** — Full transcript and audio/video replay of the session
+- 🧑‍💻 **AI Avatar Interviewer** - Animated 2D/3D avatar with lip-sync powered by D-ID or HeyGen API
+- 🎤 **Voice I/O** - Real-time speech-to-text via Whisper plus text-to-speech via ElevenLabs or browser TTS
+- 🧠 **Adaptive Question Engine** - LLM-driven question generation that adapts based on role, difficulty, and how you answered the last question
+- 💻 **In-Browser Code Editor** - Monaco Editor with multi-language support and a live execution sandbox
+- 📊 **Post-Session Analytics** - Scoring rubric, answer quality breakdown, and specific improvement suggestions
+- 🔁 **Session Replay** - Full transcript and audio/video replay so you can review exactly what happened
 
 ### Engineering-Specific
-- DSA rounds (arrays, trees, graphs, DP) with automatic test case validation
-- System design rounds with a live whiteboard (Excalidraw embed or custom canvas)
-- Behavioral rounds scored using STAR-method rubric
+- DSA rounds covering arrays, trees, graphs, and DP with automatic test case validation
+- System design rounds with a live whiteboard (Excalidraw embedded or custom canvas)
+- Behavioral rounds scored against a STAR-method rubric
 
-### Auth & User Management
-- OAuth login (GitHub / Google) — natural fit for engineers
-- Interview history dashboard
-- Role/track selection (Frontend, Backend, ML, Fullstack, DevOps)
+### Auth and User Management
+- OAuth login via GitHub or Google (a natural fit for the target audience)
+- Interview history dashboard with session-by-session progress
+- Role and track selection across Frontend, Backend, ML, Fullstack, and DevOps
 
 ---
 
@@ -176,7 +178,6 @@ interviewforge/
 │   │   │   └── websocket.ts        # WS client
 │   │   └── stores/                 # Zustand stores
 │
-├── apps/
 │   └── api/                        # FastAPI backend
 │       ├── main.py
 │       ├── routers/
@@ -218,29 +219,29 @@ interviewforge/
 
 ## Development Roadmap
 
-### Phase 0 — Foundation (Week 1–2)
-> Repo setup, auth, database, base UI shell
+### Phase 0: Foundation (Week 1-2)
+> Get the boring stuff right. Auth, database, local dev environment, and a bare-bones UI shell.
 
-- [ ] Monorepo init (turborepo or nx) with `apps/web` and `apps/api`
+- [ ] Monorepo setup (turborepo or nx) with `apps/web` and `apps/api`
 - [ ] PostgreSQL schema: `users`, `sessions`, `questions`, `answers`, `reports`
 - [ ] Alembic migration setup
-- [ ] FastAPI boilerplate with JWT auth (register, login, refresh)
-- [ ] NextAuth.js v5 with GitHub + Google OAuth
-- [ ] Dashboard shell — session history list, role selector
+- [ ] FastAPI boilerplate with JWT auth (register, login, token refresh)
+- [ ] NextAuth.js v5 with GitHub and Google OAuth
+- [ ] Dashboard shell with session history list and role selector
 - [ ] Docker Compose for local dev (postgres, redis, api, web)
 
 ---
 
-### Phase 1 — Interview Engine Core (Week 3–5)
-> The brain: session management, LLM question generation, real-time transcript
+### Phase 1: Interview Engine Core (Week 3-5)
+> The brain of the whole thing: session state machine, LLM question generation, and real-time transcript.
 
-- [ ] **Session FSM** — states: `SETUP → INTRO → ROUND_ACTIVE → BREAK → ANALYSIS → DONE`
-- [ ] **LLM Question Generator** — system prompt design per round type (DSA / SysDesign / Behavioral)
-- [ ] **Adaptive follow-up logic** — inject previous answer + rubric score into next prompt
-- [ ] **WebSocket session room** — server-side connection manager, message protocol
-- [ ] **STT pipeline** — browser mic → audio chunk → Whisper API → transcript → send to LLM
-- [ ] **TTS pipeline** — LLM response text → ElevenLabs → audio stream → play in browser
-- [ ] Basic end-to-end voice interview test (no avatar yet)
+- [ ] **Session FSM** with states: `SETUP -> INTRO -> ROUND_ACTIVE -> BREAK -> ANALYSIS -> DONE`
+- [ ] **LLM Question Generator** with system prompt design per round type (DSA, SysDesign, Behavioral)
+- [ ] **Adaptive follow-up logic** that injects the previous answer and rubric score into the next prompt
+- [ ] **WebSocket session room** with a server-side connection manager and message protocol
+- [ ] **STT pipeline** from browser mic to audio chunk to Whisper API to transcript to LLM
+- [ ] **TTS pipeline** from LLM response text to ElevenLabs to audio stream to browser playback
+- [ ] Basic end-to-end voice interview test (no avatar yet, just voice)
 
 **LLM Prompt Architecture:**
 ```
@@ -255,64 +256,64 @@ user: [previous_context + candidate_answer]
 
 ---
 
-### Phase 2 — Avatar Integration (Week 6–7)
-> Bringing the interviewer to life
+### Phase 2: Avatar Integration (Week 6-7)
+> Bringing the interviewer to life so it actually feels like talking to someone.
 
-- [ ] Evaluate D-ID Streaming API vs HeyGen Live Portrait
-- [ ] Integrate chosen SDK — stream avatar video to `<video>` element
+- [ ] Evaluate D-ID Streaming API vs HeyGen Live Portrait and pick one
+- [ ] Integrate the chosen SDK and stream avatar video into a `<video>` element
 - [ ] Sync avatar speech playback with TTS audio output
-- [ ] Idle / listening / speaking state transitions
+- [ ] Handle idle, listening, and speaking state transitions cleanly
 - [ ] Avatar persona config (name, appearance, voice style)
-- [ ] Fallback: static avatar image + animated waveform if streaming fails
+- [ ] Fallback to a static avatar image with an animated waveform if streaming fails
 
 **D-ID Integration Flow:**
 ```
-TTS text → POST /talks (D-ID API) → streaming video URL → 
-<video> element → plays synchronized with audio
+TTS text -> POST /talks (D-ID API) -> streaming video URL -> 
+<video> element -> plays synchronized with audio
 ```
 
 ---
 
-### Phase 3 — Code Interview Layer (Week 8–9)
-> DSA rounds with real code execution
+### Phase 3: Code Interview Layer (Week 8-9)
+> DSA rounds with an actual code editor and real execution, not a text box.
 
-- [ ] Monaco Editor — language selector (Python, JS, Java, C++)
-- [ ] Problem statement panel (rendered Markdown + test cases)
-- [ ] Code submission → FastAPI → Docker sandbox runner
-- [ ] Sandbox: isolated Docker container, 5s timeout, memory limit
+- [ ] Monaco Editor with language selector (Python, JS, Java, C++)
+- [ ] Problem statement panel with rendered Markdown and test cases
+- [ ] Code submission from Monaco to FastAPI to Docker sandbox runner
+- [ ] Sandbox: isolated Docker container, 5s timeout, memory limit enforced
 - [ ] Auto-test against hidden test cases, return pass/fail per case
-- [ ] LLM code review — time/space complexity analysis, feedback
-- [ ] Live hints system (3 hints per problem, progressively more specific)
+- [ ] LLM code review with time/space complexity analysis and written feedback
+- [ ] Live hints system (3 hints per problem, each one progressively more specific)
 
 **Sandbox Security Model:**
 ```
-User code → Celery task → spawn Docker container 
+User code -> Celery task -> spawn Docker container 
   (no network, read-only FS, PID limit, 256MB RAM, 5s CPU) 
-→ capture stdout/stderr → destroy container → return result
+-> capture stdout/stderr -> destroy container -> return result
 ```
 
 ---
 
-### Phase 4 — System Design Round (Week 10)
-> Whiteboard + verbal explanation
+### Phase 4: System Design Round (Week 10)
+> Whiteboard plus verbal explanation. The round most people under-prepare for.
 
-- [ ] Embed Excalidraw in a resizable panel
-- [ ] Candidate draws, LLM evaluates verbal explanation via STT
-- [ ] Prompts: scale requirement, bottleneck identification, trade-off discussion
-- [ ] Diagram saved as SVG/JSON to S3 for replay
-- [ ] Scoring: coverage of components, scalability, data flow correctness
+- [ ] Embed Excalidraw in a resizable panel alongside the avatar
+- [ ] Candidate draws while explaining; LLM evaluates the verbal explanation via STT
+- [ ] Prompts covering scale requirements, bottleneck identification, and trade-off discussion
+- [ ] Save diagram as SVG/JSON to S3 for replay after the session
+- [ ] Score based on component coverage, scalability thinking, and data flow correctness
 
 ---
 
-### Phase 5 — Scoring & Analytics (Week 11–12)
-> The report card
+### Phase 5: Scoring and Analytics (Week 11-12)
+> The part candidates actually care about: what did I do well, what did I mess up, and what do I work on next.
 
-- [ ] **Per-question scoring** — LLM-as-judge with structured output (JSON rubric scores)
-- [ ] **Overall session report** — aggregate score, category breakdown, percentile
-- [ ] **Strength/weakness summary** — LLM-generated narrative paragraph
-- [ ] **Improvement recommendations** — linked resources (LeetCode tags, reading list)
-- [ ] **Session replay** — transcript timeline + code submissions + whiteboard snapshot
-- [ ] PDF report export
+- [ ] **Per-question scoring** using LLM-as-judge with structured JSON rubric output
+- [ ] **Overall session report** with aggregate score, category breakdown, and percentile
+- [ ] **Strength/weakness summary** as a readable narrative paragraph, not just numbers
+- [ ] **Improvement recommendations** with linked resources (LeetCode tags, reading list)
+- [ ] **Session replay** showing transcript timeline, code submissions, and whiteboard snapshot
+- [ ] PDF report export for sharing or keeping records
 
 **Scoring Rubric (per answer):**
 ```json
@@ -329,29 +330,29 @@ User code → Celery task → spawn Docker container
 
 ---
 
-### Phase 6 — Polish & Launch Prep (Week 13–14)
-> Reliability, UX, and the "wow" moments
+### Phase 6: Polish and Launch Prep (Week 13-14)
+> Reliability, UX, and making sure the first 10 users don't bounce.
 
-- [ ] Connection resilience — WS reconnect on drop, session state recovery
-- [ ] Mobile responsive (interview view degrades gracefully on tablet)
-- [ ] Onboarding flow — role picker, difficulty picker, resume upload (optional)
-- [ ] Rate limiting on API (per-user session limit)
-- [ ] Error boundaries and fallback UIs throughout
-- [ ] Sentry integration (frontend + backend)
+- [ ] Connection resilience with WS reconnect on drop and session state recovery
+- [ ] Mobile responsive layout (interview view degrades gracefully on tablet)
+- [ ] Onboarding flow with role picker, difficulty picker, and optional resume upload
+- [ ] Rate limiting on the API (per-user session limit)
+- [ ] Error boundaries and fallback UIs throughout the app
+- [ ] Sentry integration on both frontend and backend
 - [ ] Landing page
-- [ ] Alpha user cohort — 10 engineers, collect feedback
+- [ ] Alpha cohort of 10 engineers to collect real feedback
 
 ---
 
-### Phase 7 — Growth Features (Post-Launch)
-> After proving the core loop
+### Phase 7: Growth Features (Post-Launch)
+> After proving that the core loop actually works.
 
-- [ ] Interview question bank (community-sourced)
-- [ ] Company-specific tracks (Google L4, Meta E3, startup generalist)
-- [ ] Peer practice rooms (2 candidates, 1 AI judge)
-- [ ] Recruiter portal — async screening with auto-scored reports
-- [ ] LeetCode integration — sync solved problems to personalize question selection
-- [ ] Mobile app (React Native)
+- [ ] Interview question bank sourced from the community
+- [ ] Company-specific tracks (Google L4, Meta E3, startup generalist, etc.)
+- [ ] Peer practice rooms with 2 candidates and 1 AI judge
+- [ ] Recruiter portal for async AI screening with auto-scored candidate reports
+- [ ] LeetCode integration to sync solved problems and personalize question selection
+- [ ] Mobile app built in React Native
 
 ---
 
@@ -392,7 +393,7 @@ npm install
 npm run dev
 ```
 
-App runs at `http://localhost:3000`, API at `http://localhost:8000`.
+The app runs at `http://localhost:3000` and the API at `http://localhost:8000`.
 
 ### 5. Run Celery worker (for async tasks)
 ```bash
@@ -444,29 +445,29 @@ NEXT_PUBLIC_WS_URL=ws://localhost:8000
 
 ### Session Endpoints
 ```
-POST   /api/v1/sessions          → Create new interview session
-GET    /api/v1/sessions/{id}     → Get session details
-PATCH  /api/v1/sessions/{id}     → Update session state
-GET    /api/v1/sessions/{id}/report → Fetch full session report
+POST   /api/v1/sessions              -> Create a new interview session
+GET    /api/v1/sessions/{id}         -> Get session details
+PATCH  /api/v1/sessions/{id}         -> Update session state
+GET    /api/v1/sessions/{id}/report  -> Fetch the full session report
 ```
 
 ### Code Execution
 ```
-POST   /api/v1/code/run          → Submit code for execution
-POST   /api/v1/code/submit       → Submit final solution (runs all test cases)
+POST   /api/v1/code/run      -> Submit code for a quick execution run
+POST   /api/v1/code/submit   -> Submit final solution against all test cases
 ```
 
 ### WebSocket
 ```
-WS     /ws/{session_id}          → Main interview real-time channel
+WS     /ws/{session_id}   -> Main interview real-time channel
 
-# Client → Server messages:
+# Client to Server messages:
 { "type": "audio_chunk", "data": "<base64>" }
 { "type": "code_update", "data": { "lang": "python", "code": "..." } }
 { "type": "ready" }
 { "type": "end_session" }
 
-# Server → Client messages:
+# Server to Client messages:
 { "type": "transcript", "text": "...", "speaker": "candidate|interviewer" }
 { "type": "avatar_stream", "url": "..." }
 { "type": "question", "data": { ... } }
@@ -478,13 +479,13 @@ WS     /ws/{session_id}          → Main interview real-time channel
 
 ## Key Design Decisions
 
-**Why Docker for code sandboxing?** Security isolation is non-negotiable when executing arbitrary user code. Each submission spawns a fresh container with no network access, a hard CPU timeout, and a constrained memory limit, then is immediately destroyed.
+**Why Docker for code sandboxing?** Security isolation is non-negotiable when you're executing arbitrary user code. Each submission spawns a fresh container with no network access, a hard CPU timeout, and a constrained memory limit, then gets destroyed immediately after. There's no shared state between submissions and no way for user code to touch the host.
 
-**Why WebSockets over HTTP polling?** Interview flow is inherently real-time — voice chunks, avatar state changes, live transcripts, and score updates all require sub-100ms latency. WebSockets make the architecture simpler and faster than polling or SSE for bidirectional data.
+**Why WebSockets over HTTP polling?** The interview flow is inherently real-time. Voice chunks, avatar state changes, live transcripts, and score updates all need to move in both directions with sub-100ms latency. WebSockets make the architecture simpler and faster than polling or SSE for this kind of bidirectional, low-latency data.
 
-**Why Celery for TTS/STT?** Audio processing (Whisper transcription, ElevenLabs synthesis) can take 1–3 seconds. Offloading to async workers keeps the WebSocket handler non-blocking and lets the avatar respond as soon as audio is ready.
+**Why Celery for TTS/STT?** Audio processing via Whisper and ElevenLabs can take anywhere from 1 to 3 seconds per call. Offloading to async workers keeps the WebSocket handler non-blocking and lets the avatar start responding as soon as the audio is ready, instead of stalling the whole session.
 
-**LLM-as-judge for scoring:** Rather than hard-coded rubrics, the LLM evaluates answers against a structured prompt that defines the rubric. This generalizes across question types and produces human-readable feedback, not just a number.
+**LLM-as-judge for scoring:** Rather than hard-coded rubrics that break for anything unexpected, the LLM evaluates each answer against a structured prompt that defines the scoring criteria. This generalizes cleanly across question types and produces human-readable feedback alongside the scores, not just a number out of 40.
 
 ---
 
@@ -492,7 +493,7 @@ WS     /ws/{session_id}          → Main interview real-time channel
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feat/avatar-lip-sync`
-3. Commit changes: `git commit -m "feat: add D-ID streaming integration"`
+3. Commit your changes: `git commit -m "feat: add D-ID streaming integration"`
 4. Push and open a PR against `main`
 
 Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
@@ -501,7 +502,7 @@ Please follow [Conventional Commits](https://www.conventionalcommits.org/) for c
 
 ## License
 
-MIT — see [LICENSE](./LICENSE) for details.
+MIT. See [LICENSE](./LICENSE) for details.
 
 ---
 
