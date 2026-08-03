@@ -7,7 +7,6 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-// Attach token from localStorage
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");

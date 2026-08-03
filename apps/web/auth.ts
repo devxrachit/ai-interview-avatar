@@ -4,6 +4,38 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { authApi } from "@/lib/api";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+async function getBackendToken(
+  provider: string,
+  providerAccountId: string,
+  email: string,
+  name: string,
+  image: string
+): Promise<string | null> {
+  try {
+    const params = new URLSearchParams({
+      provider,
+      provider_id: providerAccountId,
+      email: email || `${providerAccountId}@${provider}.oauth`,
+      name: name || "User",
+      avatar_url: image || "",
+    });
+    const res = await fetch(`${API_URL}/api/v1/auth/oauth/callback?${params}`, {
+      method: "POST",
+    });
+    if (!res.ok) {
+      console.error(`[auth] OAuth backend returned ${res.status}:`, await res.text());
+      return null;
+    }
+    const data = await res.json();
+    return data.access_token ?? null;
+  } catch (e) {
+    console.error("[auth] OAuth backend fetch failed:", e);
+    return null;
+  }
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     GitHub({
@@ -42,16 +74,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "github" || account?.provider === "google") {
-        try {
-          const res = await authApi.oauthCallback(
-            account.provider,
-            account.providerAccountId,
-            user.email!,
-            user.name || "",
-            user.image || ""
-          );
-          (user as Record<string, unknown>).backendToken = res.data.access_token;
-        } catch {}
+        const token = await getBackendToken(
+          account.provider,
+          account.providerAccountId!,
+          user.email!,
+          user.name || "",
+          user.image || ""
+        );
+        if (token) {
+          (user as Record<string, unknown>).backendToken = token;
+        }
       }
       return true;
     },
