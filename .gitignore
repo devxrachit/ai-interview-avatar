@@ -1,0 +1,22 @@
+# Python
+apps/api/venv/
+apps/api/__pycache__/
+apps/api/**/__pycache__/
+apps/api/**/*.pyc
+apps/api/**/*.pyo
+apps/api/*.db
+apps/api/*.db-shm
+apps/api/*.db-wal
+
+# Secrets — never commit these
+apps/api/.env
+apps/web/.env.local
+
+# Node
+apps/web/node_modules/
+apps/web/.next/
+apps/web/.turbo/
+
+# OS
+.DS_Store
+Thumbs.db
