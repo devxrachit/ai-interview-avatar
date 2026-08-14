@@ -21,7 +21,7 @@ class User(Base):
     hashed_password = Column(String, nullable=True)
     role = Column(String, default="candidate")
     preferred_track = Column(String, default="fullstack")
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     sessions = relationship("InterviewSession", back_populates="user")
 
@@ -36,9 +36,9 @@ class InterviewSession(Base):
     company_tier = Column(String, default="mid")  # startup | mid | faang
     status = Column(String, default="setup")  # setup | intro | active | analysis | done
     total_score = Column(Float, nullable=True)
-    started_at = Column(DateTime, nullable=True)
-    ended_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    started_at = Column(DateTime(timezone=True), nullable=True)
+    ended_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="sessions")
     questions = relationship("Question", back_populates="session")
@@ -62,8 +62,8 @@ class Question(Base):
     score_overall = Column(Float, nullable=True)
     feedback = Column(Text, nullable=True)
     follow_up_topics = Column(JSON, nullable=True)
-    asked_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    answered_at = Column(DateTime, nullable=True)
+    asked_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    answered_at = Column(DateTime(timezone=True), nullable=True)
 
     session = relationship("InterviewSession", back_populates="questions")
 
@@ -79,6 +79,6 @@ class SessionReport(Base):
     recommendations = Column(Text)
     category_scores = Column(JSON)
     full_transcript = Column(JSON)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     session = relationship("InterviewSession", back_populates="report")
