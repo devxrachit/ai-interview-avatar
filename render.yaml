@@ -1,25 +1,35 @@
 # Render Blueprint for the InterviewForge FastAPI backend.
 #
-# Deploy (Blueprint): Render Dashboard → New → Blueprint → connect this repo →
-# Apply, then fill in GROQ_API_KEY when prompted.
+# Uses Render's NATIVE Python runtime (no Docker) — the most reliable path on the
+# free tier: Render manages the Python env, installs from requirements.txt, and
+# runs uvicorn directly. No Dockerfile detection, no apt, no cross-dir context.
 #
-# Or the simpler, most reliable path (no Blueprint):
-#   New → Web Service → connect repo → Root Directory: apps/api →
-#   Runtime: Docker (auto-detected) → Instance Type: Free → add GROQ_API_KEY.
+# Deploy (Blueprint): Render Dashboard → New → Blueprint → connect this repo →
+# Apply → set GROQ_API_KEY when prompted.
+#
+# Or manually: New → Web Service → Root Directory: apps/api →
+#   Language/Runtime: Python 3 →
+#   Build Command:  pip install -r requirements.txt
+#   Start Command:  uvicorn main:app --host 0.0.0.0 --port $PORT
+#   Instance Type: Free → add GROQ_API_KEY.
 #
 # The backend needs a persistent server (not serverless) because the interview
-# engine holds long-lived WebSocket connections — which is why it lives here and
-# not on Vercel alongside the frontend.
+# engine holds long-lived WebSocket connections — which is why it's here and not
+# on Vercel alongside the frontend.
 services:
   - type: web
     name: interviewforge-api
-    runtime: docker
+    runtime: python
     rootDir: apps/api
     plan: free
     region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     autoDeploy: true
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
       # Your Groq API key (console.groq.com). Entered in the dashboard, never committed.
       - key: GROQ_API_KEY
         sync: false
