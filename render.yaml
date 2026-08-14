@@ -18,7 +18,7 @@
 # on Vercel alongside the frontend.
 services:
   - type: web
-    name: interviewforge-api
+    name: interviewforge-api-devxrachit
     runtime: python
     rootDir: apps/api
     plan: free
