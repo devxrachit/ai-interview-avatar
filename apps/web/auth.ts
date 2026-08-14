@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
@@ -36,41 +36,59 @@ async function getBackendToken(
   }
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [
+// Only register an OAuth provider when its credentials are actually configured,
+// so unconfigured providers can't 500 the auth handler or surface invalid-client
+// errors. The UI mirrors this via /api/auth/providers.
+const providers: NextAuthConfig["providers"] = [];
+
+if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+  providers.push(
     GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    }),
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    })
+  );
+}
+
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.push(
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    Credentials({
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        try {
-          const res = await authApi.login(
-            credentials.email as string,
-            credentials.password as string
-          );
-          const data = res.data;
-          return {
-            id: data.user.id,
-            email: data.user.email,
-            name: data.user.name,
-            image: data.user.avatar_url,
-            backendToken: data.access_token,
-          };
-        } catch {
-          return null;
-        }
-      },
-    }),
-  ],
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    })
+  );
+}
+
+providers.push(
+  Credentials({
+    credentials: {
+      email: { label: "Email", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      try {
+        const res = await authApi.login(
+          credentials.email as string,
+          credentials.password as string
+        );
+        const data = res.data;
+        return {
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.name,
+          image: data.user.avatar_url,
+          backendToken: data.access_token,
+        };
+      } catch {
+        return null;
+      }
+    },
+  })
+);
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  providers,
+  trustHost: true,
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "github" || account?.provider === "google") {
