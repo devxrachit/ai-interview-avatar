@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { SessionSync } from "@/components/SessionSync";
+import SiteExperience from "@/components/SiteExperience";
 
 export const metadata: Metadata = {
   title: "InterviewForge — AI Mock Interview Platform",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SessionProvider>
           <SessionSync />
           {children}
+          <SiteExperience />
         </SessionProvider>
       </body>
     </html>
