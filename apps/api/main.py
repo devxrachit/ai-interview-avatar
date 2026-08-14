@@ -19,9 +19,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="InterviewForge API", version="1.0.0", lifespan=lifespan)
 
+# CORS: always allow local dev, plus any origin(s) in FRONTEND_URL
+# (comma-separated), plus every Vercel preview/prod domain via regex.
+_frontend_env = os.getenv("FRONTEND_URL", "http://localhost:3000")
+_allowed_origins = ["http://localhost:3000"] + [o.strip() for o in _frontend_env.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", os.getenv("FRONTEND_URL", "http://localhost:3000")],
+    allow_origins=list(dict.fromkeys(_allowed_origins)),
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

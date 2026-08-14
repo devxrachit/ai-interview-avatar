@@ -1,0 +1,33 @@
+# Render Blueprint for the InterviewForge FastAPI backend.
+# Deploy: Render Dashboard → New → Blueprint → connect this repo → pick the
+# branch that contains this file → Apply. Then set the two `sync: false` secrets
+# (GROQ_API_KEY and FRONTEND_URL) when prompted.
+#
+# The backend needs a persistent server (not serverless) because the interview
+# engine holds long-lived WebSocket connections — which is why it lives here and
+# not on Vercel alongside the frontend.
+services:
+  - type: web
+    name: interviewforge-api
+    runtime: docker
+    repo: https://github.com/devxrachit/ai-interview-avatar
+    branch: chore/vercel-deploy-prep
+    plan: free
+    region: oregon
+    dockerfilePath: ./docker/Dockerfile.api
+    dockerContext: ./apps/api
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Your Groq API key (console.groq.com). Entered in the dashboard, never committed.
+      - key: GROQ_API_KEY
+        sync: false
+      # Public URL of the deployed Vercel frontend, e.g. https://web-xxxx.vercel.app
+      # Used for CORS. Comma-separate multiple origins if needed.
+      - key: FRONTEND_URL
+        sync: false
+      # Signing key for the app's JWTs — generated once by Render and kept stable.
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///./interviewforge.db

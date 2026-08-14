@@ -1,0 +1,16 @@
+# Keep the build context (and image) small and reproducible.
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Never bake local secrets or the local dev database into the image.
+.env
+*.db
+*.sqlite
+*.sqlite3
+
+.git/
+.gitignore
