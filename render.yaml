@@ -40,5 +40,7 @@ services:
       # Signing key for the app's JWTs — generated once by Render and kept stable.
       - key: JWT_SECRET
         generateValue: true
+      # Set in the Render dashboard to the managed Postgres connection string.
+      # sync:false so a Blueprint re-sync never overwrites it (e.g. back to SQLite).
       - key: DATABASE_URL
-        value: sqlite+aiosqlite:///./interviewforge.db
+        sync: false
